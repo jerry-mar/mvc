@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="column" format="integer" />
+    <attr name="scale" format="float" />
+    <attr name="degree" format="integer" />
+    <attr name="transX" format="dimension" />
+    <attr name="transY" format="dimension" />
+
+    <declare-styleable name="InflaterFactory">
+
+        <attr name="android:id" />
+
+    </declare-styleable>
+
+    <declare-styleable name="AutomaticLayout">
+
+        <attr name="orientation">
+            <flag name="horizontal" value="0" />
+            <flag name="vertical" value="1" />
+        </attr>
+
+        <attr name="column" />
+
+    </declare-styleable>
+
+    <declare-styleable name="ImageView">
+
+        <attr name="scale" />
+
+    </declare-styleable>
+
+    <declare-styleable name="RotateTextView">
+
+        <attr name="degree" />
+        <attr name="transX" />
+        <attr name="transY" />
+
+    </declare-styleable>
+
+</resources>

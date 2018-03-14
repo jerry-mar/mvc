@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="def">0dp</dimen>
+
+    <dimen name="mini">12sp</dimen>
+    <dimen name="normal">14sp</dimen>
+    <dimen name="sub">16sp</dimen>
+    <dimen name="title">18sp</dimen>
+    <dimen name="jumbo">28sp</dimen>
+
+</resources>
