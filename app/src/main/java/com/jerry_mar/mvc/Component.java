@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,9 +48,18 @@ public class Component<T extends Scene> extends PermissionComponent
             factory.setScene(scene.toList());
             View view = scene.create(root);
             root.addView(view);
-            changeStatusBar();
         }
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle bundle) {
+        super.onViewCreated(view, bundle);
+        if(scene != null) {
+            changeStatusBar();
+            scene.initialize();
+        }
+        initialize();
     }
 
     private LayoutInflater build(LayoutInflater inflater) {
@@ -80,7 +90,6 @@ public class Component<T extends Scene> extends PermissionComponent
         }
         changeStatusBar();
         root.requestLayout();
-        onActivityCreated(Bundle.EMPTY);
     }
 
     private void changeStatusBar() {
@@ -112,17 +121,6 @@ public class Component<T extends Scene> extends PermissionComponent
 
     protected T bindScene(RuntimeContext context) {
         return null;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle bundle) {
-        if (bundle != Bundle.EMPTY) {
-            super.onActivityCreated(bundle);
-        }
-        if(scene != null) {
-            scene.initialize();
-        }
-        initialize();
     }
 
     protected void initialize() {}
