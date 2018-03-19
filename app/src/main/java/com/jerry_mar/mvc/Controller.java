@@ -33,6 +33,10 @@ public abstract class Controller<T extends Scene> extends PermissionController
         handler = new Handler(this);
     }
 
+    void setFactory(InflaterFactory factory) {
+        this.factory = factory;
+    }
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);

@@ -5,9 +5,14 @@ import android.app.Application;
 import android.os.Process;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class ControllerUtils {
     private static LinkedList<Activity> stack = new LinkedList<>();
+
+    public static List<Activity> getStack() {
+        return stack;
+    }
 
     /**
      * @since 1.0
