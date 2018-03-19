@@ -30,13 +30,15 @@ public class ImageView extends AppCompatImageView {
         int size = MeasureSpec.getSize(heightMeasureSpec);
         int mode = MeasureSpec.getMode(heightMeasureSpec);
         if (size == 0 && mode == MeasureSpec.EXACTLY) {
-            heightMeasureSpec = (int) (widthMeasureSpec * scale);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec((int)
+                    (MeasureSpec.getSize(widthMeasureSpec) * scale), MeasureSpec.EXACTLY);
         } else {
             size = MeasureSpec.getSize(widthMeasureSpec);
             mode = MeasureSpec.getMode(widthMeasureSpec);
 
             if (size == 0 && mode == MeasureSpec.EXACTLY) {
-                widthMeasureSpec = (int) (heightMeasureSpec * scale);
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec((int)
+                        (MeasureSpec.getSize(heightMeasureSpec) * scale), MeasureSpec.EXACTLY);
             }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
