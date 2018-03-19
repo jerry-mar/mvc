@@ -25,6 +25,11 @@ public class SkinContext extends Application implements SkinLoader.Callback {
         skinName = getSkin();
     }
 
+    @Override
+    public Resources getResources() {
+        return resources;
+    }
+
     public void loadSkin() {
         String skin = getSkin();
         if (skin != null && !skin.equals(skinName)) {
