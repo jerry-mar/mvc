@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-public class DeminUtils {
+public class DimenUtils {
     private static int STATUS_HEIGHT;
     private static int SCREEN_WIDTH;
     private static int SCREEN_HEIGHT;

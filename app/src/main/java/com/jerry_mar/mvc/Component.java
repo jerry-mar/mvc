@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import android.widget.FrameLayout;
 
 import com.jerry_mar.mvc.widget.InflaterFactory;
 import com.jerry_mar.mvc.content.Carrier;
-import com.jerry_mar.mvc.utils.DeminUtils;
+import com.jerry_mar.mvc.utils.DimenUtils;
 
 public class Component<T extends Scene> extends PermissionComponent
         implements Handler.Callback {
@@ -66,7 +65,7 @@ public class Component<T extends Scene> extends PermissionComponent
         LayoutInflater.Factory2 factory = inflater.getFactory2();
         if(factory instanceof InflaterFactory) {
             inflater = inflater.cloneInContext(getContext());
-            this.factory = new InflaterFactory(this);
+            this.factory = new InflaterFactory(this, getResources());
             this.factory.inject(inflater);
         }
         this.inflater = inflater;
@@ -101,14 +100,14 @@ public class Component<T extends Scene> extends PermissionComponent
 
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        DeminUtils.getStatusBarHeight(getContext()));
+                        DimenUtils.getStatusBarHeight(getContext()));
                 params.gravity = Gravity.TOP;
                 statusBar.setLayoutParams(params);
                 statusBar.setTag(toString());
             }
             ViewCompat.setBackground(statusBar, scene.getStatusBarDrawable());
             ((ViewGroup.MarginLayoutParams) scene.getView().getLayoutParams())
-                    .topMargin = DeminUtils.getStatusBarHeight(getContext());
+                    .topMargin = DimenUtils.getStatusBarHeight(getContext());
             scene.setFitsSystemWindows(false);
             scene.requestApplyInsets();
         } else {

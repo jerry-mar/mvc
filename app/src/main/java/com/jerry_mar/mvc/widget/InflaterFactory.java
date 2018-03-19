@@ -1,13 +1,16 @@
 package com.jerry_mar.mvc.widget;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +25,13 @@ import com.jerry_mar.mvc.callback.DefinedOnClickListener;
 import com.jerry_mar.mvc.callback.DefinedOnLongClickListener;
 import com.jerry_mar.mvc.callback.Filter;
 import com.jerry_mar.mvc.callback.OnClickFilter;
+import com.jerry_mar.mvc.callback.OnLoad;
+import com.jerry_mar.mvc.callback.OnLoadCallback;
 import com.jerry_mar.mvc.callback.OnLongClickFilter;
+import com.jerry_mar.mvc.callback.OnRefresh;
+import com.jerry_mar.mvc.callback.OnRefreshCallback;
 import com.jerry_mar.mvc.callback.OnTextWatcherFilter;
+import com.jerry_mar.mvc.callback.RecyclerEvent;
 import com.jerry_mar.mvc.widget.ImageView;
 
 import java.lang.reflect.Constructor;
@@ -38,8 +46,9 @@ import java.util.Map;
 
 public class InflaterFactory implements LayoutInflater.Factory2 {
     private Object controller;
-    private List<Object> scenes;
+    private Resources res;
     private Map<Integer, CallbackInfo> target;
+    private List<Method> methods;
 
     private Object[] constructorArgs;
     private static final Class<?>[] signature = new Class[]{Context.class, AttributeSet.class};
@@ -58,23 +67,23 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
         filters.add(new OnTextWatcherFilter());
     }
 
-    public InflaterFactory(Object controller) {
+    public InflaterFactory(Object controller, Resources res) {
+        this.res = res;
         this.controller = controller;
         constructorArgs = new Object[2];
         target = new HashMap<>();
     }
 
     public void setScene(List<Object> scenes) {
-        this.scenes = scenes;
         target.clear();
         int count = scenes.size();
         for (int i = 0; i < count; i++) {
             Object scene = scenes.get(i);
             Class<?> cls = scene.getClass();
             Method[] array = cls.getMethods();
-            List<Method> ms = new LinkedList<>();
-            ms.addAll(Arrays.asList(array));
-            execute(scene, ms);
+            methods = new LinkedList<>();
+            methods.addAll(Arrays.asList(array));
+            execute(scene, methods);
         }
     }
 
@@ -98,14 +107,53 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
         view = onCreateView(name, context, attrs);
 
         CallbackInfo info;
-        if (id != View.NO_ID && (info = target.get(id)) != null) {
-            bind(view, info);
+        if (id != View.NO_ID) {
+            if ((info = target.get(id)) != null) {
+                bind(view, info);
+            } else {
+                if (view instanceof SwipeRefreshLayout) {
+                    setOnRefreshListener((SwipeRefreshLayout) view, id);
+                } else if (view instanceof RecyclerView) {
+                    setOnLoadListener((RecyclerView) view, id);
+                }
+            }
         }
 
         if (parent != null) {
             view.setLayoutParams(parent.generateLayoutParams(attrs));
         }
         return view;
+    }
+
+    private void setOnLoadListener(RecyclerView view, int id) {
+        int count = methods.size();
+        for (int i = 0; i < count; i++) {
+            Method method = methods.get(i);
+            if (method.isAnnotationPresent(OnLoad.class)) {
+                OnLoad annotation = method.getAnnotation(OnLoad.class);
+                String value = annotation.value();
+                if (res.getResourceEntryName(id).equals(value)) {
+                    view.addOnScrollListener(new OnLoadCallback(new RecyclerEvent(),
+                            method, controller));
+                    break;
+                }
+            }
+        }
+    }
+
+    private void setOnRefreshListener(SwipeRefreshLayout view, int id) {
+        int count = methods.size();
+        for (int i = 0; i < count; i++) {
+            Method method = methods.get(i);
+            if (method.isAnnotationPresent(OnRefresh.class)) {
+                OnRefresh annotation = method.getAnnotation(OnRefresh.class);
+                String value = annotation.value();
+                if (res.getResourceEntryName(id).equals(value)) {
+                    view.setOnRefreshListener(new OnRefreshCallback(method, controller));
+                    break;
+                }
+            }
+        }
     }
 
     private void bind(View view, CallbackInfo info) {

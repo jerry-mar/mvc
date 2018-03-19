@@ -18,7 +18,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.jerry_mar.mvc.utils.ControllerUtils;
-import com.jerry_mar.mvc.utils.DeminUtils;
+import com.jerry_mar.mvc.utils.DimenUtils;
 import com.jerry_mar.mvc.widget.InflaterFactory;
 
 public abstract class Controller<T extends Scene> extends PermissionController
@@ -39,7 +39,7 @@ public abstract class Controller<T extends Scene> extends PermissionController
         ControllerUtils.add(this);
         inflater = getLayoutInflater();
         try{
-            factory = new InflaterFactory(this);
+            factory = new InflaterFactory(this, getResources());
             inflater.setFactory2(factory);
         } catch (IllegalStateException e) {
             factory.inject(inflater);
@@ -98,12 +98,12 @@ public abstract class Controller<T extends Scene> extends PermissionController
             root.addView(statusBar);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    DeminUtils.getStatusBarHeight(this));
+                    DimenUtils.getStatusBarHeight(this));
             params.gravity = Gravity.TOP;
             statusBar.setLayoutParams(params);
             statusBar.setTag(toString());
             ((ViewGroup.MarginLayoutParams) parent.getLayoutParams())
-                    .topMargin = DeminUtils.getStatusBarHeight(this);
+                    .topMargin = DimenUtils.getStatusBarHeight(this);
         }
         ViewCompat.setBackground(statusBar, scene.getStatusBarDrawable());
     }
