@@ -164,12 +164,12 @@ public abstract class Scene {
     }
 
     public void refresh(int id) {
-        SwipeRefreshLayout view = holder.getView(id);
+        SwipeRefreshLayout view = holder.findView(id);
         view.setRefreshing(true);
     }
 
     public void finish(int id) {
-        SwipeRefreshLayout view = holder.getView(id);
+        SwipeRefreshLayout view = holder.findView(id);
         view.setRefreshing(false);
     }
 
