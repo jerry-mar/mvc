@@ -68,10 +68,10 @@ public abstract class Controller<T extends Scene> extends PermissionController
         ViewGroup parent = root.findViewById(Window.ID_ANDROID_CONTENT);
         View view = scene.create(parent);
         adjustWindowAndView(window, (ViewGroup) root, parent);
-        super.setContentView(view, view.getLayoutParams());
         if (scene != null) {
             scene.initialize(bundle);
         }
+        super.setContentView(view, view.getLayoutParams());
     }
 
     private void adjustWindowAndView(Window window, ViewGroup root, ViewGroup parent) {
