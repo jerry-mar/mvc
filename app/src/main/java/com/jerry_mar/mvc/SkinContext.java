@@ -51,8 +51,7 @@ public class SkinContext extends Application implements SkinLoader.Callback {
     }
 
     @Override
-    public void onPreExecute() {
-    }
+    public void onPreExecute() {}
 
     @Override
     public void onFinish(SkinResources resources) {

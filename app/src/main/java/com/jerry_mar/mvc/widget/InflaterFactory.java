@@ -70,6 +70,8 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
     public InflaterFactory(Object controller, Resources res) {
         this.res = res;
         this.controller = controller;
+        methods = new LinkedList<>();
+        methods.addAll(Arrays.asList(controller.getClass().getMethods()));
         constructorArgs = new Object[2];
         target = new HashMap<>();
     }
@@ -80,9 +82,8 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
         for (int i = 0; i < count; i++) {
             Object scene = scenes.get(i);
             Class<?> cls = scene.getClass();
-            Method[] array = cls.getMethods();
-            methods = new LinkedList<>();
-            methods.addAll(Arrays.asList(array));
+            List<Method> methods = new LinkedList<>();
+            methods.addAll(Arrays.asList(cls.getMethods()));
             execute(scene, methods);
         }
     }
@@ -126,13 +127,18 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
     }
 
     private void setOnLoadListener(RecyclerView view, int id) {
-        int count = methods.size();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < methods.size(); i++) {
             Method method = methods.get(i);
+            if (method.getAnnotations().length == 0) {
+                methods.remove(i);
+                i--;
+                continue;
+            }
             if (method.isAnnotationPresent(OnLoad.class)) {
                 OnLoad annotation = method.getAnnotation(OnLoad.class);
                 String value = annotation.value();
                 if (res.getResourceEntryName(id).equals(value)) {
+                    methods.remove(method);
                     view.addOnScrollListener(new OnLoadCallback(new RecyclerEvent(),
                             method, controller));
                     break;
@@ -142,13 +148,18 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
     }
 
     private void setOnRefreshListener(SwipeRefreshLayout view, int id) {
-        int count = methods.size();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < methods.size(); i++) {
             Method method = methods.get(i);
+            if (method.getAnnotations().length == 0) {
+                methods.remove(i);
+                i--;
+                continue;
+            }
             if (method.isAnnotationPresent(OnRefresh.class)) {
                 OnRefresh annotation = method.getAnnotation(OnRefresh.class);
                 String value = annotation.value();
                 if (res.getResourceEntryName(id).equals(value)) {
+                    methods.remove(method);
                     view.setOnRefreshListener(new OnRefreshCallback(method, controller));
                     break;
                 }

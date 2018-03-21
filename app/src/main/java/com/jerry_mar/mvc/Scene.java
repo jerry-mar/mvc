@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +35,7 @@ public abstract class Scene {
     private ViewHolder holder;
     private SparseArray<Object> resource;
 
-    protected Scene(RuntimeContext context) {
+    public Scene(RuntimeContext context) {
         this.context = context;
         resource = new SparseArray<>();
     }
@@ -160,6 +161,16 @@ public abstract class Scene {
 
     protected Drawable getBackground(int id) {
         return holder.getBackground(id);
+    }
+
+    public void refresh(int id) {
+        SwipeRefreshLayout view = holder.getView(id);
+        view.setRefreshing(true);
+    }
+
+    public void finish(int id) {
+        SwipeRefreshLayout view = holder.getView(id);
+        view.setRefreshing(false);
     }
 
     protected void show(int id, int resId) {
