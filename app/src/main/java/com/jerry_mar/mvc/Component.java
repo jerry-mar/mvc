@@ -53,7 +53,9 @@ public class Component<T extends Scene> extends PermissionComponent
 
     @Override
     public void onViewCreated(View view, Bundle bundle) {
-        super.onViewCreated(view, bundle);
+        if (view != null) {
+            super.onViewCreated(view, bundle);
+        }
         if(scene != null) {
             changeStatusBar();
             scene.initialize();
@@ -89,6 +91,7 @@ public class Component<T extends Scene> extends PermissionComponent
         }
         changeStatusBar();
         root.requestLayout();
+        onViewCreated(null, null);
     }
 
     private void changeStatusBar() {
