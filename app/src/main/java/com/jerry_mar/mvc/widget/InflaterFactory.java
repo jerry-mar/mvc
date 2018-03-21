@@ -138,7 +138,6 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
                 OnLoad annotation = method.getAnnotation(OnLoad.class);
                 String value = annotation.value();
                 if (res.getResourceEntryName(id).equals(value)) {
-                    methods.remove(method);
                     view.addOnScrollListener(new OnLoadCallback(new RecyclerEvent(),
                             method, controller));
                     break;
@@ -159,7 +158,6 @@ public class InflaterFactory implements LayoutInflater.Factory2 {
                 OnRefresh annotation = method.getAnnotation(OnRefresh.class);
                 String value = annotation.value();
                 if (res.getResourceEntryName(id).equals(value)) {
-                    methods.remove(method);
                     view.setOnRefreshListener(new OnRefreshCallback(method, controller));
                     break;
                 }
