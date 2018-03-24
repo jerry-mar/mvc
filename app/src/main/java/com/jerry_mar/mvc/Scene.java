@@ -80,6 +80,9 @@ public abstract class Scene {
         View view = holder.getView(0);
         view = view == null ? holder.getView() : view;
         Drawable drawable = view.getBackground();
+        if (drawable == null) {
+            drawable = new ColorDrawable(Color.TRANSPARENT);
+        }
         return drawable.getConstantState().newDrawable();
     }
 
