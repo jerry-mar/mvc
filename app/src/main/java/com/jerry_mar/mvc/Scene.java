@@ -166,12 +166,12 @@ public abstract class Scene {
         return holder.getBackground(id);
     }
 
-    public void refresh(int id) {
+    protected void refresh(int id) {
         SwipeRefreshLayout view = holder.findView(id);
         view.setRefreshing(true);
     }
 
-    public void finish(int id) {
+    protected void finish(int id) {
         SwipeRefreshLayout view = holder.findView(id);
         view.setRefreshing(false);
     }
@@ -308,11 +308,11 @@ public abstract class Scene {
         return value;
     }
 
-    public void forward(Intent intent) {
+    protected void forward(Intent intent) {
         forward(intent, R.anim.anim_right_in, R.anim.anim_right_out);
     }
 
-    public void forward(Intent intent, int in, int out) {
+    protected void forward(Intent intent, int in, int out) {
         Message msg = context.getHandler().obtainMessage();
         intent.putExtra(TYPE, FORWARD);
         msg.obj = intent;
@@ -321,11 +321,11 @@ public abstract class Scene {
         context.getHandler().sendMessage(msg);
     }
 
-    public void forward(Intent intent, int code) {
+    protected void forward(Intent intent, int code) {
         forward(intent, code, R.anim.anim_right_in, R.anim.anim_right_out);
     }
 
-    public void forward(Intent intent, int code, int in, int out) {
+    protected void forward(Intent intent, int code, int in, int out) {
         Message msg = context.getHandler().obtainMessage();
         intent.putExtra(TYPE, FORWARD_FOR_RESULT);
         msg.obj = intent;
@@ -335,11 +335,11 @@ public abstract class Scene {
         context.getHandler().sendMessage(msg);
     }
 
-    public void finish() {
+    protected void finish() {
         finish(R.anim.anim_right_in, R.anim.anim_right_out);
     }
 
-    public void finish(int in, int out) {
+    protected void finish(int in, int out) {
         Message msg = context.getHandler().obtainMessage();
         Intent intent = new Intent();
         intent.putExtra(TYPE, FINISH);
@@ -349,11 +349,11 @@ public abstract class Scene {
         context.getHandler().sendMessage(msg);
     }
 
-    public void finish(Intent intent, int code) {
+    protected void finish(Intent intent, int code) {
         finish(intent, code, R.anim.anim_right_in, R.anim.anim_right_out);
     }
 
-    public void finish(Intent intent, int code, int in, int out) {
+    protected void finish(Intent intent, int code, int in, int out) {
         Message msg = context.getHandler().obtainMessage();
         intent.putExtra(TYPE, FINISH_WITH_RESULT);
         msg.obj = intent;

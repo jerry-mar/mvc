@@ -14,7 +14,6 @@ public class SkinContext extends Application implements SkinLoader.Callback {
     public static final String SKIN_NAME = "skin_name";
 
     private Storage storage;
-    private String skinName;
     private Resources resources;
 
     @Override
@@ -22,7 +21,6 @@ public class SkinContext extends Application implements SkinLoader.Callback {
         super.onCreate();
         storage = Storage.getStorage(this, getClass().getSimpleName());
         loadSkin();
-        skinName = getSkin();
     }
 
     @Override
@@ -31,19 +29,15 @@ public class SkinContext extends Application implements SkinLoader.Callback {
     }
 
     public void loadSkin() {
-        String skin = getSkin();
-        if (skin != null && !skin.equals(skinName)) {
-            new SkinLoader(this).execute(skin, this);
-        }
+        new SkinLoader(this).execute(getSkin(), this);
     }
 
     public void putSkin(String path) {
-        storage.putString(SKIN_NAME, path).apply();
+        storage.putString(SKIN_NAME, path).commit();
     }
 
     public void resetSkin() {
-        storage.remove(SKIN_NAME);
-        storage.apply();
+        storage.remove(SKIN_NAME).commit();
     }
 
     public String getSkin() {
@@ -51,7 +45,15 @@ public class SkinContext extends Application implements SkinLoader.Callback {
     }
 
     @Override
-    public void onPreExecute() {}
+    public void onPreExecute() {
+        List<Activity> stack = ControllerUtils.getStack();
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            Activity activity = stack.get(i);
+            if (activity instanceof SkinInterface) {
+                ((SkinInterface) activity).onPreExecute();
+            }
+        }
+    }
 
     @Override
     public void onFinish(SkinResources resources) {
@@ -60,7 +62,6 @@ public class SkinContext extends Application implements SkinLoader.Callback {
         } else {
             this.resources = resources;
         }
-
         List<Activity> stack = ControllerUtils.getStack();
         for (int i = stack.size() - 1; i >= 0; i--) {
             Activity activity = stack.get(i);

@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="count" format="integer" />
+    <attr name="speed" format="float" />
+    <attr name="max" format="float" />
+    <attr name="min" format="float" />
     <attr name="column" format="integer" />
     <attr name="scale" format="float" />
     <attr name="degree" format="integer" />
     <attr name="transX" format="dimension" />
     <attr name="transY" format="dimension" />
+
+    <declare-styleable name="RainView">
+
+        <attr name="count" />
+        <attr name="speed" />
+        <attr name="max" />
+        <attr name="min" />
+        <attr name="meteor" format="reference" />
+
+    </declare-styleable>
 
     <declare-styleable name="InflaterFactory">
 
@@ -27,6 +41,10 @@
     <declare-styleable name="ImageView">
 
         <attr name="scale" />
+        <attr name="shape">
+            <flag name="circle" value="1" />
+            <flag name="rectangle" value="0" />
+        </attr>
 
     </declare-styleable>
 
