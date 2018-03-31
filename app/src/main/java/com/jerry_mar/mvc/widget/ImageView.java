@@ -35,7 +35,7 @@ public class ImageView extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ImageView);
         scale = a.getFloat(R.styleable.ImageView_scale, 1.0F);
-        shape = a.getInt(R.styleable.ImageView_shape, 0);
+        shape = a.getInt(R.styleable.ImageView_image_shape, 0);
         a.recycle();
     }
 
