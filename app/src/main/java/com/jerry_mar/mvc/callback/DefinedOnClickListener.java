@@ -11,7 +11,6 @@ public class DefinedOnClickListener implements View.OnClickListener {
     private Method coreMethod;
     private Object target;
     private Method method;
-    private boolean init;
 
     public DefinedOnClickListener(Object controller, Object target, Method method) {
         this.controller = controller;
@@ -29,7 +28,7 @@ public class DefinedOnClickListener implements View.OnClickListener {
             } else {
                 params = (Map<String, ?>) method.invoke(target, view);
             }
-            if (!init) {
+            if (coreMethod == null && params != null) {
                 try {
                     if (params == null) {
                         coreMethod = controller.getClass().getMethod(method.getName());
@@ -39,7 +38,6 @@ public class DefinedOnClickListener implements View.OnClickListener {
                 } catch (Exception e) {
                     coreMethod = null;
                 }
-                init = true;
             }
             if (coreMethod != null) {
                 if (params == null) {

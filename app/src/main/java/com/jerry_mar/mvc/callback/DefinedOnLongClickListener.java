@@ -11,7 +11,6 @@ public class DefinedOnLongClickListener implements View.OnLongClickListener {
     private Method coreMethod;
     private Object target;
     private Method method;
-    private boolean init;
 
     public DefinedOnLongClickListener(Object controller, Object target, Method method) {
         this.controller = controller;
@@ -29,7 +28,7 @@ public class DefinedOnLongClickListener implements View.OnLongClickListener {
             } else {
                 params = (Map<String, ?>) method.invoke(target, view);
             }
-            if (!init) {
+            if (coreMethod == null && params != null) {
                 try {
                     if (params == null) {
                         coreMethod = controller.getClass().getMethod(method.getName());
@@ -39,7 +38,6 @@ public class DefinedOnLongClickListener implements View.OnLongClickListener {
                 } catch (Exception e) {
                     coreMethod = null;
                 }
-                init = true;
             }
             if (coreMethod != null) {
                 if (params == null) {
