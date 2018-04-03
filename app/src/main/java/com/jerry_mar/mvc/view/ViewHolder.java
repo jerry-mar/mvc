@@ -135,13 +135,28 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         view.setVisibility(View.VISIBLE);
     }
 
+    public boolean isShow(int resId) {
+        View view = findView(resId);
+        return view.getVisibility() == View.VISIBLE;
+    }
+
     public void hide(int resId) {
         View view = findView(resId);
         view.setVisibility(View.GONE);
     }
 
+    public boolean isHidden(int resId) {
+        View view = findView(resId);
+        return view.getVisibility() == View.GONE;
+    }
+
     public void sneak(int resId) {
         View view = findView(resId);
         view.setVisibility(View.INVISIBLE);
+    }
+
+    public boolean isSneak(int resId) {
+        View view = findView(resId);
+        return view.getVisibility() == View.INVISIBLE;
     }
 }

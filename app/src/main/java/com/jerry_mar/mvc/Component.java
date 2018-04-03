@@ -74,7 +74,7 @@ public class Component<T extends Scene> extends PermissionComponent
         return inflater;
     }
 
-    public void rebind() {
+    protected void rebind() {
         RuntimeContext runtime = new RuntimeContext(getActivity(),
                         inflater, getResources(), handler);
         View view;

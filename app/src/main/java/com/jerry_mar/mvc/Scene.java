@@ -192,6 +192,10 @@ public abstract class Scene {
         }
     }
 
+    protected boolean isShow(int id) {
+        return holder.isShow(id);
+    }
+
     protected void hide(int id, int resId) {
         View view;
         if (id != -1) {
@@ -208,8 +212,16 @@ public abstract class Scene {
         }
     }
 
+    protected boolean isHidden(int id) {
+        return holder.isHidden(id);
+    }
+
     protected void sneak(int id) {
         holder.sneak(id);
+    }
+
+    protected boolean isSneak(int id) {
+        return holder.isSneak(id);
     }
 
     protected View createView(int resId, View parent) {

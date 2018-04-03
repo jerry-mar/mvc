@@ -51,7 +51,7 @@ public abstract class Controller<T extends Scene> extends PermissionController
         onPrepare(bundle);
     }
 
-    public void onPrepare(Bundle bundle) {
+    protected void onPrepare(Bundle bundle) {
         action(bundle);
     }
 
