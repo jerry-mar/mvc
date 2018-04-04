@@ -10,12 +10,16 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 
 import com.jerry_mar.mvc.view.ViewHolder;
 
@@ -124,6 +128,22 @@ public abstract class Scene {
 
     protected CharSequence getText(int id) {
         return holder.getText(id).toString();
+    }
+
+    protected void password(int id, boolean show) {
+        EditText view = holder.findView(id);
+        TransformationMethod method;
+        if (show) {
+            method = HideReturnsTransformationMethod.getInstance();
+        } else {
+            method = PasswordTransformationMethod.getInstance();
+        }
+        view.setTransformationMethod(method);
+    }
+
+    protected boolean password(int id) {
+        EditText view = holder.findView(id);
+        return view.getTransformationMethod() == PasswordTransformationMethod.getInstance();
     }
 
     protected void setTextColor(int id, int color) {
