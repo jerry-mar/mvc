@@ -26,6 +26,10 @@ public class TimerView extends AppCompatTextView implements Runnable {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
     public void start(long time, long unit, long delay) {
         start(time, unit, delay, "", "秒");
     }
