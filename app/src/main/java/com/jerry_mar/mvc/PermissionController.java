@@ -5,6 +5,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class PermissionController extends DataController {
     public static final String[] STORAGE = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -74,7 +77,7 @@ public class PermissionController extends DataController {
         return result;
     }
 
-    public void requestPermission(String[] permissiones, int requestCode) {
+    public void requestPermission(int requestCode, String[] permissiones) {
         if (checkPermission(permissiones)) {
             onActivityResult(requestCode, RESULT_OK, null);
         } else {
@@ -86,13 +89,46 @@ public class PermissionController extends DataController {
         }
     }
 
+    public void requestPermission(int requestCode, String[]... permissiones) {
+        int count = permissiones.length;
+        List<String> permission = new LinkedList<>();
+        for (int i = 0; i < count; i++) {
+            String[] group = permissiones[i];
+            if (!checkPermission(group)) {
+                permission.add(group[0]);
+            }
+        }
+        if (permission.size() != 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                permission.add(0, Manifest.permission.INTERNET);
+                requestPermissions(permission.toArray(new String[permission.size()]), requestCode);
+            } else {
+                onActivityResult(requestCode, RESULT_OK, null);
+            }
+        } else {
+            onActivityResult(requestCode, RESULT_OK, null);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] result) {
         boolean allow = false;
+        boolean multiple = false;
+        String permission = permissions[0];
+        if (permission.equals(Manifest.permission.INTERNET)) {
+            allow = multiple = true;
+        }
         for (int code : result) {
-            if (code == PackageManager.PERMISSION_GRANTED) {
-                allow = true;
-                break;
+            if (multiple) {
+                if (code == PackageManager.PERMISSION_DENIED) {
+                    allow = false;
+                    break;
+                }
+            } else {
+                if (code == PackageManager.PERMISSION_GRANTED) {
+                    allow = true;
+                    break;
+                }
             }
         }
         if (allow) {
