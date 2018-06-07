@@ -3,16 +3,22 @@ package com.jerry_mar.mvc.widget;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 
 import com.jerry_mar.mvc.Component;
 import com.jerry_mar.mvc.Controller;
@@ -209,5 +215,139 @@ public class Dialog extends DialogFragment {
 
     public interface Designer {
         void design(ViewHolder holder, String tag);
+    }
+
+    //--------------------------------------------------------------------------------------------------------------------
+    public void setTag(int resId, Object tag) {
+        holder.setTag(resId, tag);
+    }
+
+    public <T> T getTag(int resId) {
+        return holder.getTag(resId);
+    }
+
+    public void setText(int id, CharSequence value) {
+        holder.setText(id, value);
+    }
+
+    public CharSequence getValue(int id) {
+        return holder.getText(id).toString();
+    }
+
+    public void password(int id, boolean show) {
+        EditText view = holder.findView(id);
+        TransformationMethod method;
+        if (show) {
+            method = HideReturnsTransformationMethod.getInstance();
+        } else {
+            method = PasswordTransformationMethod.getInstance();
+        }
+        view.setTransformationMethod(method);
+    }
+
+    public boolean password(int id) {
+        EditText view = holder.findView(id);
+        return view.getTransformationMethod() == PasswordTransformationMethod.getInstance();
+    }
+
+    public void setTextColor(int id, int color) {
+        holder.setTextColor(id, color);
+    }
+
+    public void getTextColor(int id) {
+        holder.getTextColor(id);
+    }
+
+    public void setImage(int id, int resId) {
+        holder.setImage(id, resId);
+    }
+
+    public void setImage(int id, Bitmap bitmap) {
+        holder.setImage(id, bitmap);
+    }
+
+    public void setImageDrawable(int id, Drawable drawable) {
+        holder.setImageDrawable(id, drawable);
+    }
+
+    public Drawable getImageDrawable(int id) {
+        return holder.getImageDrawable(id);
+    }
+
+    public void setBackgroundColor(int id, int color) {
+        holder.setBackgroundColor(id, color);
+    }
+
+    public void setBackground(int id, Drawable drawable) {
+        holder.setBackground(id, drawable);
+    }
+
+    public void setBackground(int id, int color) {
+        holder.setBackground(id, color);
+    }
+
+    public Drawable getBackground(int id) {
+        return holder.getBackground(id);
+    }
+
+    public void show(int id) {
+        holder.show(id);
+    }
+
+    public boolean isShow(int id) {
+        return holder.isShow(id);
+    }
+
+    public void hide(int id, int resId) {
+        holder.hide(id);
+    }
+
+    public boolean isHidden(int id) {
+        return holder.isHidden(id);
+    }
+
+    public void sneak(int id) {
+        holder.sneak(id);
+    }
+
+    public boolean isSneak(int id) {
+        return holder.isSneak(id);
+    }
+
+    public void addView(int id, View child) {
+        addView(id, child, -1);
+    }
+
+    public void addView(int id, View child, int index) {
+        ViewGroup group = holder.findView(id);
+        group.addView(child, index);
+    }
+
+    public View getView(int id, int index) {
+        ViewGroup group = holder.findView(id);
+        return group.getChildAt(index);
+    }
+
+    public void removeView(int id, int index) {
+        ViewGroup group = holder.findView(id);
+        group.removeViewAt(index);
+    }
+
+    public void removeView(int id, View view) {
+        ViewGroup group = holder.findView(id);
+        group.removeView(view);
+    }
+
+    public void removeView(int id) {
+        ViewGroup group = holder.findView(id);
+        group.removeAllViews();
+    }
+
+    public void requestLayout(int id) {
+        holder.findView(id).requestLayout();
+    }
+
+    public void requestLayout(View view) {
+        view.requestLayout();
     }
 }
